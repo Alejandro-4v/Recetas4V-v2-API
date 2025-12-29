@@ -1,0 +1,15 @@
+# IDE - PhpStorm / IntelliJ IDEA
+/.idea/
+*.iml
+*.ipr
+*.iws
+
+# IDE - Visual Studio
+*.code-workspace
+
+# Docker & MySQL
+/mysql/
+
+# OS
+.DS_Store
+Thumbs.db
