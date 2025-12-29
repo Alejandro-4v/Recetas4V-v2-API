@@ -1,0 +1,31 @@
+services:
+  php:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    container_name: php
+    volumes:
+      - ./api/:/api
+    profiles:
+      - api
+    depends_on:
+      - mysql
+    working_dir: /api
+    stdin_open: true
+    tty: true
+
+  mysql:
+    image: mysql:8.1
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: API
+      MYSQL_USER: api
+      MYSQL_PASSWORD: api
+    volumes:
+      - ./mysql:/var/lib/mysql
+    profiles:
+      - api
