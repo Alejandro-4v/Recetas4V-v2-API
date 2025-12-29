@@ -12,7 +12,7 @@ up:
 
 down:
 	@echo "$(BLUE)Stopping containers"
-	docker compose down
+	docker compose down php mysql
 	@echo "$(GREEN)Containers stopped"
 
 restart:
