@@ -9,10 +9,8 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Recipe>
  */
-class RecipeRepository extends ServiceEntityRepository
-{
-    public function __construct(ManagerRegistry $registry)
-    {
+class RecipeRepository extends ServiceEntityRepository {
+    public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Recipe::class);
     }
 
@@ -30,6 +28,18 @@ class RecipeRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
+
+    /**
+     * @return Recipe[] Returns an array of Recipe objects
+     */
+    public function findByType(int $typeID) {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.type = :val')
+            ->setParameter('val', $typeID)
+            ->orderBy('r.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
 //    public function findOneBySomeField($value): ?Recipe
 //    {
