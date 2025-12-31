@@ -2,11 +2,13 @@
 
 namespace App\Dto;
 
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class NutrientInputDTO
 {
     #[Assert\NotBlank(groups: ['create'])]
+    #[SerializedName('type-id')]
     public ?int $typeId = null;
 
     #[Assert\NotBlank(groups: ['create'])]

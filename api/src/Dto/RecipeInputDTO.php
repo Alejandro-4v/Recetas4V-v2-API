@@ -2,27 +2,32 @@
 
 namespace App\Dto;
 
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class RecipeInputDTO
 {
     #[Assert\NotBlank(groups: ['create'])]
-    #[Assert\Length(min: 3, max: 255)]
+    #[Assert\Length(max: 255)]
     public ?string $title = null;
 
     #[Assert\NotBlank(groups: ['create'])]
     #[Assert\Positive]
+    #[SerializedName('number-diner')]
     public ?int $numberDiner = null;
 
     #[Assert\NotBlank(groups: ['create'])]
+    #[SerializedName('type-id')]
     public ?int $typeId = null;
 
     /** @var IngredientInputDTO[] */
     #[Assert\Valid]
+    #[Assert\Count(min: 1)]
     public array $ingredients = [];
 
     /** @var StepInputDTO[] */
     #[Assert\Valid]
+    #[Assert\Count(min: 1)]
     public array $steps = [];
 
     /** @var NutrientInputDTO[] */

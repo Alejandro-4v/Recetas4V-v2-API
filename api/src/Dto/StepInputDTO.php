@@ -2,12 +2,14 @@
 
 namespace App\Dto;
 
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class StepInputDTO
 {
     #[Assert\NotBlank(groups: ['create'])]
     #[Assert\Positive]
+    #[SerializedName('order')]
     public ?int $stepOrder = null;
 
     #[Assert\NotBlank(groups: ['create'])]

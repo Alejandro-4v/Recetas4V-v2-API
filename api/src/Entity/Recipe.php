@@ -6,6 +6,7 @@ use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 class Recipe
@@ -19,10 +20,12 @@ class Recipe
     private ?string $title = null;
 
     #[ORM\Column]
+    #[SerializedName('number-diner')]
     private ?int $numberDiner = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[SerializedName('type-id')]
     private ?RecipeType $type = null;
 
     /**
