@@ -10,8 +10,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
-class Recipe
-{
+class Recipe {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -36,21 +35,21 @@ class Recipe
     /**
      * @var Collection<int, Ingredient>
      */
-    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'recipe', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'recipe', cascade: ['persist', 'remove'])]
     #[Groups(['recipe:read'])]
     private Collection $ingredients;
 
     /**
      * @var Collection<int, Step>
      */
-    #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'recipe', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'recipe', cascade: ['persist', 'remove'])]
     #[Groups(['recipe:read'])]
     private Collection $steps;
 
     /**
      * @var Collection<int, Nutrient>
      */
-    #[ORM\OneToMany(targetEntity: Nutrient::class, mappedBy: 'recipe', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Nutrient::class, mappedBy: 'recipe', cascade: ['persist', 'remove'])]
     #[Groups(['recipe:read'])]
     private Collection $nutrients;
 
@@ -58,15 +57,13 @@ class Recipe
     #[Groups(['recipe:read'])]
     private ?Rating $rating = null;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->ingredients = new ArrayCollection();
         $this->steps = new ArrayCollection();
         $this->nutrients = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
@@ -75,32 +72,27 @@ class Recipe
         return $this->title;
     }
 
-    public function setTitle(string $title): static
-    {
+    public function setTitle(string $title): static {
         $this->title = $title;
 
         return $this;
     }
 
-    public function getNumberDiner(): ?int
-    {
+    public function getNumberDiner(): ?int {
         return $this->numberDiner;
     }
 
-    public function setNumberDiner(int $numberDiner): static
-    {
+    public function setNumberDiner(int $numberDiner): static {
         $this->numberDiner = $numberDiner;
 
         return $this;
     }
 
-    public function getType(): ?RecipeType
-    {
+    public function getType(): ?RecipeType {
         return $this->type;
     }
 
-    public function setType(?RecipeType $type): static
-    {
+    public function setType(?RecipeType $type): static {
         $this->type = $type;
 
         return $this;
@@ -109,13 +101,11 @@ class Recipe
     /**
      * @return Collection<int, Ingredient>
      */
-    public function getIngredients(): Collection
-    {
+    public function getIngredients(): Collection {
         return $this->ingredients;
     }
 
-    public function addIngredient(Ingredient $ingredient): static
-    {
+    public function addIngredient(Ingredient $ingredient): static {
         if (!$this->ingredients->contains($ingredient)) {
             $this->ingredients->add($ingredient);
             $ingredient->setRecipe($this);
@@ -124,28 +114,14 @@ class Recipe
         return $this;
     }
 
-    public function removeIngredient(Ingredient $ingredient): static
-    {
-        if ($this->ingredients->removeElement($ingredient)) {
-            // set the owning side to null (unless already changed)
-            if ($ingredient->getRecipe() === $this) {
-                $ingredient->setRecipe(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Step>
      */
-    public function getSteps(): Collection
-    {
+    public function getSteps(): Collection {
         return $this->steps;
     }
 
-    public function addStep(Step $step): static
-    {
+    public function addStep(Step $step): static {
         if (!$this->steps->contains($step)) {
             $this->steps->add($step);
             $step->setRecipe($this);
@@ -154,28 +130,14 @@ class Recipe
         return $this;
     }
 
-    public function removeStep(Step $step): static
-    {
-        if ($this->steps->removeElement($step)) {
-            // set the owning side to null (unless already changed)
-            if ($step->getRecipe() === $this) {
-                $step->setRecipe(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Nutrient>
      */
-    public function getNutrients(): Collection
-    {
+    public function getNutrients(): Collection {
         return $this->nutrients;
     }
 
-    public function addNutrient(Nutrient $nutrient): static
-    {
+    public function addNutrient(Nutrient $nutrient): static {
         if (!$this->nutrients->contains($nutrient)) {
             $this->nutrients->add($nutrient);
             $nutrient->setRecipe($this);
@@ -184,25 +146,11 @@ class Recipe
         return $this;
     }
 
-    public function removeNutrient(Nutrient $nutrient): static
-    {
-        if ($this->nutrients->removeElement($nutrient)) {
-            // set the owning side to null (unless already changed)
-            if ($nutrient->getRecipe() === $this) {
-                $nutrient->setRecipe(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getRating(): ?Rating
-    {
+    public function getRating(): ?Rating {
         return $this->rating;
     }
 
-    public function setRating(?Rating $rating): static
-    {
+    public function setRating(?Rating $rating): static {
         $this->rating = $rating;
 
         return $this;
