@@ -17,13 +17,18 @@ class RecipeRepository extends ServiceEntityRepository {
     /**
      * @return Recipe[] Returns an array of Recipe objects
      */
-    public function findByType(int $typeID) {
+    public function findByType(int $typeID): array {
         return $this->createQueryBuilder('r')
             ->andWhere('r.type = :val')
             ->setParameter('val', $typeID)
             ->orderBy('r.id', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function delete(Recipe $recipe): void {
+        $this->getEntityManager()->remove($recipe);
+        $this->getEntityManager()->flush();
     }
 
 }
