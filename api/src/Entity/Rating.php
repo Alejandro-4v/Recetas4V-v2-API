@@ -6,49 +6,81 @@ use App\Repository\RatingRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
-class Rating
-{
+class Rating {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(['recipe:read'])]
     private ?int $id = null;
 
-    #[ORM\Column]
-    #[Groups(['recipe:read'])]
-    private ?int $numberVotes = null;
+    #[ORM\ManyToOne(inversedBy: 'ratings')]
+    private ?Recipe $recipe = null;
 
-    #[ORM\Column]
-    #[Groups(['recipe:read'])]
-    private ?float $ratingAvg = null;
+    #[ORM\Column(length: 45, unique: true)]
+    #[Assert\Ip]
+    private ?string $ip = null;
 
-    public function getId(): ?int
-    {
+    #[ORM\Column(nullable: true)]
+    #[Assert\Range(min: 0, max: 5)]
+    private ?float $rating = null;
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getNumberVotes(): ?int
-    {
-        return $this->numberVotes;
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void {
+        $this->id = $id;
     }
 
-    public function setNumberVotes(int $numberVotes): static
-    {
-        $this->numberVotes = $numberVotes;
-
-        return $this;
+    /**
+     * @return string|null
+     */
+    public function getIp(): ?string {
+        return $this->ip;
     }
 
-    public function getRatingAvg(): ?float
-    {
-        return $this->ratingAvg;
+    /**
+     * @param string|null $ip
+     */
+    public function setIp(?string $ip): void {
+        $this->ip = $ip;
     }
 
-    public function setRatingAvg(float $ratingAvg): static
-    {
-        $this->ratingAvg = $ratingAvg;
-
-        return $this;
+    /**
+     * @return float|null
+     */
+    public function getRating(): ?float {
+        return $this->rating;
     }
+
+    /**
+     * @param float|null $rating
+     */
+    public function setRating(?float $rating): void {
+        $this->rating = $rating;
+    }
+
+    /**
+     * @return Recipe|null
+     */
+    public function getRecipe(): ?Recipe {
+        return $this->recipe;
+    }
+
+    /**
+     * @param Recipe|null $recipe
+     */
+    public function setRecipe(?Recipe $recipe): void {
+        $this->recipe = $recipe;
+    }
+
 }
