@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\RatingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
 class Rating
@@ -11,12 +12,15 @@ class Rating
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['recipe:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['recipe:read'])]
     private ?int $numberVotes = null;
 
     #[ORM\Column]
+    #[Groups(['recipe:read'])]
     private ?float $ratingAvg = null;
 
     public function getId(): ?int

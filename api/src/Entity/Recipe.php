@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 class Recipe
@@ -14,40 +15,48 @@ class Recipe
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['recipe:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['recipe:read'])]
     private ?string $title = null;
 
     #[ORM\Column]
     #[SerializedName('number-diner')]
+    #[Groups(['recipe:read'])]
     private ?int $numberDiner = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[SerializedName('type-id')]
+    #[Groups(['recipe:read'])]
     private ?RecipeType $type = null;
 
     /**
      * @var Collection<int, Ingredient>
      */
-    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'recipe')]
+    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'recipe', cascade: ['persist'])]
+    #[Groups(['recipe:read'])]
     private Collection $ingredients;
 
     /**
      * @var Collection<int, Step>
      */
-    #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'recipe')]
+    #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'recipe', cascade: ['persist'])]
+    #[Groups(['recipe:read'])]
     private Collection $steps;
 
     /**
      * @var Collection<int, Nutrient>
      */
-    #[ORM\OneToMany(targetEntity: Nutrient::class, mappedBy: 'recipe')]
+    #[ORM\OneToMany(targetEntity: Nutrient::class, mappedBy: 'recipe', cascade: ['persist'])]
+    #[Groups(['recipe:read'])]
     private Collection $nutrients;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?rating $rating = null;
+    #[Groups(['recipe:read'])]
+    private ?Rating $rating = null;
 
     public function __construct()
     {
@@ -187,12 +196,12 @@ class Recipe
         return $this;
     }
 
-    public function getRating(): ?rating
+    public function getRating(): ?Rating
     {
         return $this->rating;
     }
 
-    public function setRating(?rating $rating): static
+    public function setRating(?Rating $rating): static
     {
         $this->rating = $rating;
 

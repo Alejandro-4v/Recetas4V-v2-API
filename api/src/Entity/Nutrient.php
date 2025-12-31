@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\NutrientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: NutrientRepository::class)]
 class Nutrient
@@ -11,13 +12,16 @@ class Nutrient
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['recipe:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['recipe:read'])]
     private ?nutrientType $type = null;
 
     #[ORM\Column]
+    #[Groups(['recipe:read'])]
     private ?float $quantity = null;
 
     #[ORM\ManyToOne(inversedBy: 'nutrients')]

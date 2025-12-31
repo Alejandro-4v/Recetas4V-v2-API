@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
 class Ingredient
@@ -14,12 +15,15 @@ class Ingredient
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['recipe:read'])]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Groups(['recipe:read'])]
     private ?float $quantity = null;
 
     #[ORM\Column(length: 25)]
+    #[Groups(['recipe:read'])]
     private ?string $unit = null;
 
     #[ORM\ManyToOne(inversedBy: 'ingredients')]

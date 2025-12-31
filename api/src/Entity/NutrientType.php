@@ -12,15 +12,15 @@ class NutrientType
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['nutrients:read'])]
+    #[Groups(['nutrients:read', 'recipe:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['nutrients:read'])]
+    #[Groups(['nutrients:read', 'recipe:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['nutrients:read'])]
+    #[Groups(['nutrients:read', 'recipe:read'])]
     private ?string $unit = null;
 
     public function getId(): ?int

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\RecipeTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: RecipeTypeRepository::class)]
 class RecipeType
@@ -11,12 +12,15 @@ class RecipeType
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['recipe:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['recipe:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['recipe:read'])]
     private ?string $description = null;
 
     public function getId(): ?int
