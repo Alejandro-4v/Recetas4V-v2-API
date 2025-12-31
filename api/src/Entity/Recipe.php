@@ -29,7 +29,7 @@ class Recipe
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[SerializedName('type-id')]
+    #[SerializedName('type')]
     #[Groups(['recipe:read'])]
     private ?RecipeType $type = null;
 

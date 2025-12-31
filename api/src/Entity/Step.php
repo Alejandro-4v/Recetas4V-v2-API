@@ -17,6 +17,7 @@ class Step
 
     #[ORM\Column]
     #[Groups(['recipe:read'])]
+    #[SerializedName('order')]
     private ?int $step_order = null;
 
     #[ORM\Column(length: 255)]
