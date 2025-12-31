@@ -31,4 +31,9 @@ class RecipeRepository extends ServiceEntityRepository {
         $this->getEntityManager()->flush();
     }
 
+    public function update(Recipe $recipe): void {
+        $this->getEntityManager()->persist($recipe);
+        $this->getEntityManager()->flush();
+    }
+
 }
