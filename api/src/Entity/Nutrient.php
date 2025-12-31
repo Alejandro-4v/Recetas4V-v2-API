@@ -18,7 +18,7 @@ class Nutrient
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['recipe:read'])]
-    private ?nutrientType $type = null;
+    private ?NutrientType $type = null;
 
     #[ORM\Column]
     #[Groups(['recipe:read'])]
@@ -33,16 +33,16 @@ class Nutrient
     }
 
     /**
-     * @return nutrientType|null
+     * @return NutrientType|null
      */
-    public function getType(): ?nutrientType {
+    public function getType(): ?NutrientType {
         return $this->type;
     }
 
     /**
-     * @param nutrientType|null $type
+     * @param NutrientType|null $type
      */
-    public function setType(?nutrientType $type): void {
+    public function setType(?NutrientType $type): void {
         $this->type = $type;
     }
 
