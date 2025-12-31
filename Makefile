@@ -1,4 +1,4 @@
-.PHONY: up down restart build shell start stop install clean m-entity m-controller
+.PHONY: up down restart build shell start stop install clean m-entity m-controller load-mock-data
 
 # Colors
 BLUE := \033[0;34m
@@ -52,3 +52,8 @@ m-entity:
 
 m-controller:
 	docker exec -it php php bin/console make:controller
+
+load-mock-data:
+	@echo "$(BLUE)Loading mock data$(RESET)"
+	docker exec -it php php bin/console app:load-mock-data
+	@echo "$(GREEN)Mock data loaded$(RESET)"
