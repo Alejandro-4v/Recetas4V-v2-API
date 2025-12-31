@@ -8,6 +8,7 @@ use App\Dto\RecipeInputDTO;
 use App\Dto\StepInputDTO;
 use App\Entity\Ingredient;
 use App\Entity\Nutrient;
+use App\Entity\Rating;
 use App\Entity\Recipe;
 use App\Entity\Step;
 use App\Repository\NutrientTypeRepository;
@@ -22,6 +23,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 final class RecipesController extends AbstractController {
     #[Route('/recipes', name: 'app_recipes', methods: ['GET'])]
@@ -131,20 +133,41 @@ final class RecipesController extends AbstractController {
     }
 
     #[Route('/recipes/{recipeId}/rating/{rate}', name: 'app_recipes_update', methods: ['POST'])]
-    public function updateRating(RecipeRepository $recipeRepository, Request $request): JsonResponse {
+    public function updateRating(
+        int                $recipeId, // Symfony can automatically map route params to variables
+        float              $rate,
+        RecipeRepository   $recipeRepository,
+        Request            $request,
+        ValidatorInterface $validator // Inject the validator service
+    ): JsonResponse {
 
-        $id = $request->attributes->get('recipeId');
-        $rate = $request->attributes->get('rate');
-
-        $recipe = $recipeRepository->find($id);
+        $recipe = $recipeRepository->find($recipeId);
 
         if (!$recipe) {
-            return new JsonResponse(['code' => '21', 'description' => 'Recipe with ID ' . $id . ' not found'], 400);
+            return new JsonResponse(['code' => '21', 'description' => 'Recipe not found'], 404);
         }
 
-        $recipe->setRating($rate);
+        $rating = new Rating();
+        $rating->setRecipe($recipe);
+        $rating->setIp($request->getClientIp());
+        $rating->setRating($rate);
 
-        $recipeRepository->updateRating($recipe);
+        $errors = $validator->validate($rating);
+
+        if (count($errors) > 0) {
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->getPropertyPath() . ': ' . $error->getMessage();
+            }
+            return new JsonResponse(['code' => '21', 'description' => $errorMessages], 400);
+        }
+
+        try {
+            $recipe->addRating($rating);
+            $recipeRepository->update($recipe);
+        } catch (UniqueConstraintViolationException $e) {
+            return new JsonResponse(['code' => '21', 'description' => 'There\'s already a rating from this IP'], 400);
+        }
 
         return $this->json($recipe, 200, context: ['groups' => ['recipe:read']]);
     }
