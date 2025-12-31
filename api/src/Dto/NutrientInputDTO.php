@@ -11,7 +11,7 @@ class NutrientInputDTO
 
     #[Assert\NotBlank(groups: ['create'])]
     #[Assert\Positive]
-    public ?int $quantity = null;
+    public ?float $quantity = null;
 
     /**
      * @return int|null
@@ -22,27 +22,23 @@ class NutrientInputDTO
 
     /**
      * @param int|null $typeId
-     * @return NutrientInputDTO
      */
-    public function setTypeId(?int $typeId): NutrientInputDTO {
+    public function setTypeId(?int $typeId): void {
         $this->typeId = $typeId;
-        return $this;
     }
 
     /**
-     * @return int|null
+     * @return float|null
      */
-    public function getQuantity(): ?int {
+    public function getQuantity(): ?float {
         return $this->quantity;
     }
 
     /**
-     * @param int|null $quantity
-     * @return NutrientInputDTO
+     * @param float|null $quantity
      */
-    public function setQuantity(?int $quantity): NutrientInputDTO {
+    public function setQuantity(?float $quantity): void {
         $this->quantity = $quantity;
-        return $this;
     }
 
 }

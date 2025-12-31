@@ -12,7 +12,7 @@ class IngredientInputDTO
 
     #[Assert\NotBlank(groups: ['create'])]
     #[Assert\Positive]
-    public ?int $quantity = null;
+    public ?float $quantity = null;
 
     #[Assert\NotBlank(groups: ['create'])]
     #[Assert\Length(max: 25)]
@@ -31,4 +31,33 @@ class IngredientInputDTO
     public function setName(?string $name): void {
         $this->name = $name;
     }
+
+    /**
+     * @return float|null
+     */
+    public function getQuantity(): ?float {
+        return $this->quantity;
+    }
+
+    /**
+     * @param float|null $quantity
+     */
+    public function setQuantity(?float $quantity): void {
+        $this->quantity = $quantity;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUnit(): ?string {
+        return $this->unit;
+    }
+
+    /**
+     * @param string|null $unit
+     */
+    public function setUnit(?string $unit): void {
+        $this->unit = $unit;
+    }
+
 }
