@@ -155,4 +155,25 @@ class Recipe {
         }
     }
 
+    #[Groups(['recipe:read'])]
+    #[SerializedName('number-votes')]
+    public function getNumberOfVotes(): int {
+        return $this->ratings->count();
+    }
+
+    #[Groups(['recipe:read'])]
+    #[SerializedName('rating-avg')]
+    public function getAverageRating(): float {
+        $ratings = $this->ratings;
+        $count = $ratings->count();
+        if ($count === 0) {
+            return 0;
+        }
+        $sum = 0;
+        foreach ($ratings as $rating) {
+            $sum += $rating->getRating();
+        }
+        return $sum / $count;
+    }
+
 }
