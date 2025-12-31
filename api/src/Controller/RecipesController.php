@@ -23,11 +23,9 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class RecipesController extends AbstractController
-{
+final class RecipesController extends AbstractController {
     #[Route('/recipes', name: 'app_recipes', methods: ['GET'])]
-    public function index(RecipeRepository $recipeRepository, Request $request): JsonResponse
-    {
+    public function index(RecipeRepository $recipeRepository, Request $request): JsonResponse {
 
         $type = $request->query->get('type');
 
@@ -40,14 +38,13 @@ final class RecipesController extends AbstractController
 
     #[Route('/recipes', name: 'app_recipes_create', methods: ['POST'])]
     public function create(
-        Request $request,
-        SerializerInterface $serializer,
-        ValidatorInterface $validator,
-        RecipeTypeRepository $recipeTypeRepository,
+        Request                $request,
+        SerializerInterface    $serializer,
+        ValidatorInterface     $validator,
+        RecipeTypeRepository   $recipeTypeRepository,
         NutrientTypeRepository $nutrientTypeRepository,
         EntityManagerInterface $entityManager
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $json = $request->getContent();
 
         try {
@@ -112,5 +109,24 @@ final class RecipesController extends AbstractController
         $entityManager->flush();
 
         return $this->json($recipe, 200, context: ['groups' => ['recipe:read']]);
+    }
+
+    #[Route('/recipes/{recipeId}', name: 'app_recipes_delete', methods: ['DELETE'])]
+    public function delete(RecipeRepository $recipeRepository, Request $request): JsonResponse {
+
+        $id = $request->attributes->get('recipeId');
+
+        $recipe = $recipeRepository->find($id);
+
+        if (!$recipe) {
+            return new JsonResponse(['code' => '21', 'description' => 'Recipe with ID ' . $id . ' not found'], 400);
+        }
+
+        $response = $this->json($recipe, 200, context: ['groups' => ['recipe:read']]);
+
+        $recipeRepository->delete($recipe);
+
+        return $response;
+
     }
 }
