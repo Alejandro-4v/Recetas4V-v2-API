@@ -53,9 +53,8 @@ class Recipe {
     #[Groups(['recipe:read'])]
     private Collection $nutrients;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['recipe:read'])]
-    private ?Rating $rating = null;
+    #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'recipe', cascade: ['persist', 'remove'])]
+    private Collection $ratings;
 
     public function __construct() {
         $this->ingredients = new ArrayCollection();
@@ -146,13 +145,14 @@ class Recipe {
         return $this;
     }
 
-    public function getRating(): ?Rating {
-        return $this->rating;
+    public function getRatings(): Collection {
+        return $this->ratings;
     }
 
-    public function setRating(?Rating $rating): static {
-        $this->rating = $rating;
-
-        return $this;
+    public function addRating(Rating $rating): void {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+        }
     }
+
 }
