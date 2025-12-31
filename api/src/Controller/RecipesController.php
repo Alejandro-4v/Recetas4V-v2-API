@@ -21,6 +21,6 @@ final class RecipesController extends AbstractController
             return $this->json($recipeRepository->findByType($type));
         }
 
-        return $this->json($recipeRepository->findAll());
+        return $this->json($recipeRepository->findAll(), context: ['groups' => ['recipe:read']]);
     }
 }
