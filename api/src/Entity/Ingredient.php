@@ -17,7 +17,7 @@ class Ingredient
     private ?string $name = null;
 
     #[ORM\Column]
-    private ?int $quantity = null;
+    private ?float $quantity = null;
 
     #[ORM\Column(length: 25)]
     private ?string $unit = null;
@@ -30,51 +30,60 @@ class Ingredient
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string {
         return $this->name;
     }
 
-    public function setName(string $name): static
-    {
+    /**
+     * @param string|null $name
+     */
+    public function setName(?string $name): void {
         $this->name = $name;
-
-        return $this;
     }
 
-    public function getQuantity(): ?int
-    {
+    /**
+     * @return float|null
+     */
+    public function getQuantity(): ?float {
         return $this->quantity;
     }
 
-    public function setQuantity(int $quantity): static
-    {
+    /**
+     * @param float|null $quantity
+     */
+    public function setQuantity(?float $quantity): void {
         $this->quantity = $quantity;
-
-        return $this;
     }
 
-    public function getUnit(): ?string
-    {
+    /**
+     * @return string|null
+     */
+    public function getUnit(): ?string {
         return $this->unit;
     }
 
-    public function setUnit(string $unit): static
-    {
+    /**
+     * @param string|null $unit
+     */
+    public function setUnit(?string $unit): void {
         $this->unit = $unit;
-
-        return $this;
     }
 
-    public function getRecipe(): ?Recipe
-    {
+    /**
+     * @return Recipe|null
+     */
+    public function getRecipe(): ?Recipe {
         return $this->recipe;
     }
 
-    public function setRecipe(?Recipe $recipe): static
-    {
+    /**
+     * @param Recipe|null $recipe
+     */
+    public function setRecipe(?Recipe $recipe): void {
         $this->recipe = $recipe;
-
-        return $this;
     }
+
 }

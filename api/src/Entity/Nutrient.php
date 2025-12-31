@@ -18,7 +18,7 @@ class Nutrient
     private ?nutrientType $type = null;
 
     #[ORM\Column]
-    private ?int $quantity = null;
+    private ?float $quantity = null;
 
     #[ORM\ManyToOne(inversedBy: 'nutrients')]
     private ?Recipe $recipe = null;
@@ -28,39 +28,46 @@ class Nutrient
         return $this->id;
     }
 
-    public function getType(): ?nutrientType
-    {
+    /**
+     * @return nutrientType|null
+     */
+    public function getType(): ?nutrientType {
         return $this->type;
     }
 
-    public function setType(?nutrientType $type): static
-    {
+    /**
+     * @param nutrientType|null $type
+     */
+    public function setType(?nutrientType $type): void {
         $this->type = $type;
-
-        return $this;
     }
 
-    public function getQuantity(): ?int
-    {
+    /**
+     * @return float|null
+     */
+    public function getQuantity(): ?float {
         return $this->quantity;
     }
 
-    public function setQuantity(int $quantity): static
-    {
+    /**
+     * @param float|null $quantity
+     */
+    public function setQuantity(?float $quantity): void {
         $this->quantity = $quantity;
-
-        return $this;
     }
 
-    public function getRecipe(): ?Recipe
-    {
+    /**
+     * @return Recipe|null
+     */
+    public function getRecipe(): ?Recipe {
         return $this->recipe;
     }
 
-    public function setRecipe(?Recipe $recipe): static
-    {
+    /**
+     * @param Recipe|null $recipe
+     */
+    public function setRecipe(?Recipe $recipe): void {
         $this->recipe = $recipe;
-
-        return $this;
     }
+
 }
