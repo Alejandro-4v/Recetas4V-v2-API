@@ -129,4 +129,23 @@ final class RecipesController extends AbstractController {
         return $response;
 
     }
+
+    #[Route('/recipes/{recipeId}/rating/{rate}', name: 'app_recipes_update', methods: ['POST'])]
+    public function updateRating(RecipeRepository $recipeRepository, Request $request): JsonResponse {
+
+        $id = $request->attributes->get('recipeId');
+        $rate = $request->attributes->get('rate');
+
+        $recipe = $recipeRepository->find($id);
+
+        if (!$recipe) {
+            return new JsonResponse(['code' => '21', 'description' => 'Recipe with ID ' . $id . ' not found'], 400);
+        }
+
+        $recipe->setRating($rate);
+
+        $recipeRepository->updateRating($recipe);
+
+        return $this->json($recipe, 200, context: ['groups' => ['recipe:read']]);
+    }
 }
