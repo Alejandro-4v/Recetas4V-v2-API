@@ -53,6 +53,14 @@ m-entity:
 m-controller:
 	docker exec -it php php bin/console make:controller
 
+migrate:
+	@echo "$(BLUE)Building migration$(RESET)"
+	docker exec -it php php bin/console make:migration
+	@echo "$(GREEN)Migration built"
+	@echo "$(BLUE)Launching migration to DB"
+	docker exec -it php php bin/console doctrine:migrations:migrate
+	@echo "$(GREEN)Migrated successfully$(RESET)"
+
 load-mock-data:
 	@echo "$(BLUE)Loading mock data$(RESET)"
 	docker exec -it php php bin/console app:load-mock-data
